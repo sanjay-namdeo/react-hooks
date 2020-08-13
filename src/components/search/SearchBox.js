@@ -22,6 +22,10 @@ export default () => {
 
             setResult(response.data.query.search);
         }
+        // If user clears search text, then remove result
+        if (!term) {
+            setResult([]);
+        }
 
         if (term && !result.length) {
             search();
@@ -44,14 +48,17 @@ export default () => {
 
     return (
         <div>
-            <h1>Wikipedia Search</h1>
-            <label>Enter search term</label>
+            <h1 className="display-4">Wikipedia Search</h1>
             <br/>
-            <input type='text' value={term} onChange={(e) => setTerm(e.target.value)}/>
+            <label htmlFor={'search-btn'} className='lead'>Enter search term</label>
+            <br/>
+            <input className={'form-control'} id={'search-btn'} type='text' value={term} onChange={(e) => setTerm(e.target.value)}/>
 
+            <div className='list-group'>
             {result.map((res, index) => {
-              return <SearchResult description={res.snippet} title={res.name} key={index}></SearchResult>
+              return <SearchResult description={res.snippet} title={res.title} key={index} pageid={res.pageid}></SearchResult>
             })}
+            </div>
         </div>
     );
 };
